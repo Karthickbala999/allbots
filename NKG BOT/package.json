@@ -1,0 +1,36 @@
+{
+  "name": "nkg-bot",
+  "version": "1.0.0",
+  "description": "A specialized Discord bot for **NKG ESPORTS** designed solely to maintain a 24/7 presence in a voice channel.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "background": "pm2 startOrReload ecosystem.config.cjs",
+    "background:stop": "pm2 delete nkg-bot",
+    "background:restart": "pm2 restart nkg-bot",
+    "background:status": "pm2 status",
+    "background:logs": "pm2 logs nkg-bot --lines 100",
+    "background:save": "pm2 save",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@discordjs/voice": "^0.19.2",
+    "colors": "^1.4.0",
+    "discord.js": "^14.26.4",
+    "dotenv": "^17.4.2",
+    "ffmpeg-static": "^5.3.0",
+    "libsodium-wrappers": "^0.8.4",
+    "opusscript": "^0.0.8",
+    "winston": "^3.19.0"
+  },
+  "devDependencies": {
+    "pm2": "^7.0.1"
+  }
+}
