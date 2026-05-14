@@ -1,0 +1,113 @@
+const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags, EmbedBuilder } = require('discord.js');
+const xlsx = require('xlsx');
+const logger = require('../utils/logger');
+
+module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('bulk-slots')
+        .setDescription('📤 Upload an Excel file to send slot lists to multiple channels')
+        .addAttachmentOption(option => 
+            option.setName('file')
+                .setDescription('The Excel file (.xlsx or .csv)')
+                .setRequired(true))
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+
+    async execute(interaction) {
+        const attachment = interaction.options.getAttachment('file');
+        
+        if (!attachment.name.endsWith('.xlsx') && !attachment.name.endsWith('.xls') && !attachment.name.endsWith('.csv')) {
+            return interaction.reply({ content: '❌ Please upload a valid Excel or CSV file.', flags: [MessageFlags.Ephemeral] });
+        }
+
+        await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
+
+        try {
+            const response = await fetch(attachment.url);
+            const arrayBuffer = await response.arrayBuffer();
+            const buffer = Buffer.from(arrayBuffer);
+            const workbook = xlsx.read(buffer, { type: 'buffer' });
+            
+            // Assume the first sheet is the one we want
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            
+            // Convert to JSON
+            // We expect headers: Group, Team (or similar)
+            const data = xlsx.utils.sheet_to_json(sheet);
+            
+            if (data.length === 0) {
+                return interaction.editReply('❌ The Excel file is empty.');
+            }
+
+            // Organize data by Group
+            const groups = {};
+            data.forEach(row => {
+                // Try to find group and team in the row
+                // Flexible naming: Group, group, G, g / Team, team, T, t
+                const groupKey = row.Group || row.group || row.G || row.g || Object.values(row)[0];
+                const teamName = row.Team || row.team || row.T || row.t || Object.values(row)[1];
+                
+                if (groupKey && teamName) {
+                    if (!groups[groupKey]) groups[groupKey] = [];
+                    groups[groupKey].push(teamName);
+                }
+            });
+
+            const groupIds = Object.keys(groups);
+            if (groupIds.length === 0) {
+                return interaction.editReply('❌ Could not find "Group" or "Team" columns in your Excel sheet.');
+            }
+
+            await interaction.editReply(`⏳ Starting to send slot lists to ${groupIds.length} groups...`);
+
+            let successCount = 0;
+            let failCount = 0;
+
+            for (const groupNum of groupIds) {
+                const teams = groups[groupNum];
+                const channelName = `group-${groupNum}`;
+                
+                // Find channel by name
+                const channel = interaction.guild.channels.cache.find(c => c.name.toLowerCase() === channelName.toLowerCase());
+                
+                if (channel) {
+                    // Format the slot list
+                    let description = '';
+                    teams.forEach((team, index) => {
+                        const slotNum = (index + 1).toString().padStart(2, '0');
+                        description += `**Slot ${slotNum}**  ->  ${team}\n`;
+                    });
+
+                    const embed = new EmbedBuilder()
+                        .setTitle(`TMR T3 3PM SLOTLIST - GROUP ${groupNum}`)
+                        .setColor('#00ffcc')
+                        .setDescription(description)
+                        .setTimestamp();
+
+                    try {
+                        await channel.send({ embeds: [embed] });
+                        successCount++;
+                    } catch (err) {
+                        logger.error(`[BULK SLOTS] Failed to send to ${channelName}: ${err.message}`);
+                        failCount++;
+                    }
+                } else {
+                    logger.warn(`[BULK SLOTS] Channel not found: ${channelName}`);
+                    failCount++;
+                }
+                
+                // Small delay to avoid rate limits
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+
+            await interaction.followUp({ 
+                content: `✅ Done! Sent ${successCount} lists. ${failCount > 0 ? `Failed: ${failCount}` : ''}`,
+                flags: [MessageFlags.Ephemeral] 
+            });
+
+        } catch (error) {
+            logger.error(`[BULK SLOTS] ${error.message}`);
+            await interaction.editReply(`❌ An error occurred while processing the file: ${error.message}`);
+        }
+    }
+};

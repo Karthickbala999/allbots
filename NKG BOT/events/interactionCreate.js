@@ -24,6 +24,25 @@ function buildRows(buttons) {
 module.exports = {
     name: 'interactionCreate',
     async execute(interaction, client) {
+        // Handle Slash Commands
+        if (interaction.isChatInputCommand()) {
+            const command = client.commands.get(interaction.commandName);
+            if (!command) return;
+
+            try {
+                await command.execute(interaction, client);
+            } catch (error) {
+                logger.error(`[COMMAND ERROR] ${error.message}`);
+                const errorResponse = { content: 'There was an error executing this command!', flags: [MessageFlags.Ephemeral] };
+                if (interaction.replied || interaction.deferred) {
+                    await interaction.followUp(errorResponse);
+                } else {
+                    await interaction.reply(errorResponse);
+                }
+            }
+            return;
+        }
+
         // Only handle button clicks
         if (!interaction.isButton()) return;
         if (!interaction.customId.startsWith('buttonrole_')) return;
