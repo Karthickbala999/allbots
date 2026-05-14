@@ -1,5 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags, EmbedBuilder } = require('discord.js');
 const xlsx = require('xlsx');
+const fs = require('fs');
+const path = require('path');
 const logger = require('../utils/logger');
 
 module.exports = {
@@ -74,6 +76,8 @@ module.exports = {
             let successCount = 0;
             let failCount = 0;
 
+            const sentMessages = [];
+
             for (const groupNum of groupIds) {
                 const teams = groups[groupNum];
                 const channelName = `group-${groupNum}`;
@@ -96,7 +100,8 @@ module.exports = {
                         .setTimestamp();
 
                     try {
-                        await channel.send({ embeds: [embed] });
+                        const msg = await channel.send({ embeds: [embed] });
+                        sentMessages.push({ channelId: channel.id, messageId: msg.id });
                         successCount++;
                     } catch (err) {
                         logger.error(`[BULK SLOTS] Failed to send to ${channelName}: ${err.message}`);
@@ -109,6 +114,14 @@ module.exports = {
                 
                 // Small delay to avoid rate limits
                 await new Promise(resolve => setTimeout(resolve, 500));
+            }
+
+            // Save the batch info so we can delete it later
+            try {
+                const dataPath = path.join(__dirname, '../data/lastBatch.json');
+                fs.writeFileSync(dataPath, JSON.stringify(sentMessages, null, 2));
+            } catch (err) {
+                logger.error(`[BULK SLOTS] Failed to save batch data: ${err.message}`);
             }
 
             await interaction.followUp({ 
