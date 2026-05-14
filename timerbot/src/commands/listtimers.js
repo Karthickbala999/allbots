@@ -1,6 +1,6 @@
 'use strict';
 
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
 const { getAllTimers } = require('../database/db');
 const { timerListEmbed, infoEmbed } = require('../utils/embeds');
 const { checkAdmin, replyError } = require('../utils/permissions');
@@ -15,7 +15,7 @@ module.exports = {
     const { ok, reason } = checkAdmin(interaction.member, interaction.guildId);
     if (!ok) return replyError(interaction, 'Permission Denied', reason);
 
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
 
     const timers = getAllTimers(interaction.guildId);
     const embed  = timerListEmbed(timers, interaction.guild.name);

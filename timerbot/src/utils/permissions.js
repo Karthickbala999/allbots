@@ -1,6 +1,6 @@
 'use strict';
 
-const { PermissionFlagsBits } = require('discord.js');
+const { PermissionFlagsBits, MessageFlags } = require('discord.js');
 const { getConfig } = require('../database/db');
 const { errorEmbed } = require('./embeds');
 
@@ -54,12 +54,16 @@ async function unlockVoiceChannel(channel) {
  * Reply to an interaction with an ephemeral error embed.
  */
 async function replyError(interaction, title, description) {
-  const embed = errorEmbed(title, description);
-  const payload = { embeds: [embed], ephemeral: true };
-  if (interaction.replied || interaction.deferred) {
-    await interaction.followUp(payload);
-  } else {
-    await interaction.reply(payload);
+  try {
+    const embed = errorEmbed(title, description);
+    const payload = { embeds: [embed], flags: [MessageFlags.Ephemeral] };
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp(payload);
+    } else {
+      await interaction.reply(payload);
+    }
+  } catch (err) {
+    // Silently ignore interaction expiration or network errors here
   }
 }
 

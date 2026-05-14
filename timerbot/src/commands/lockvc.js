@@ -22,7 +22,7 @@ module.exports = {
     const { ok, reason } = checkAdmin(interaction.member, interaction.guildId);
     if (!ok) return replyError(interaction, 'Permission Denied', reason);
 
-    await interaction.deferReply({ ephemeral: false });
+    await interaction.deferReply();
 
     const vcOpt  = interaction.options.getChannel('voice_channel');
     const config = getConfig(interaction.guildId);

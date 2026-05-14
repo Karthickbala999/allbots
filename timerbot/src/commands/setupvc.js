@@ -4,6 +4,7 @@ const {
   SlashCommandBuilder,
   ChannelType,
   PermissionFlagsBits,
+  MessageFlags,
 } = require('discord.js');
 const { upsertConfig, getConfig } = require('../database/db');
 const { setupEmbed, errorEmbed } = require('../utils/embeds');
@@ -63,7 +64,7 @@ module.exports = {
     const { ok, reason } = checkAdmin(interaction.member, interaction.guildId);
     if (!ok) return replyError(interaction, 'Permission Denied', reason);
 
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
 
     const vc          = interaction.options.getChannel('voice_channel');
     const tc          = interaction.options.getChannel('announcement_channel');

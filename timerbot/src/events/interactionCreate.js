@@ -1,5 +1,7 @@
 'use strict';
 
+const { MessageFlags } = require('discord.js');
+
 const logger = require('../utils/logger');
 const { errorEmbed } = require('../utils/embeds');
 
@@ -38,7 +40,7 @@ module.exports = {
 
       const payload = {
         embeds: [errorEmbed('Command Error', 'An unexpected error occurred. Please try again or contact an admin.')],
-        ephemeral: true,
+        flags: [MessageFlags.Ephemeral],
       };
 
       try {
