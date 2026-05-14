@@ -31,27 +31,38 @@ module.exports = {
             const sheetName = workbook.SheetNames[0];
             const sheet = workbook.Sheets[sheetName];
             
-            // Convert to JSON
-            // We expect headers: Group, Team (or similar)
-            const data = xlsx.utils.sheet_to_json(sheet);
-            
-            if (data.length === 0) {
-                return interaction.editReply('❌ The Excel file is empty.');
-            }
-
-            // Organize data by Group
+            // Organized data by Group
             const groups = {};
-            data.forEach(row => {
-                // Try to find group and team in the row
-                // Flexible naming: Group, group, G, g / Team, team, T, t
-                const groupKey = row.Group || row.group || row.G || row.g || Object.values(row)[0];
-                const teamName = row.Team || row.team || row.T || row.t || Object.values(row)[1];
-                
-                if (groupKey && teamName) {
-                    if (!groups[groupKey]) groups[groupKey] = [];
-                    groups[groupKey].push(teamName);
+            
+            // Get the range of the sheet
+            const range = xlsx.utils.decode_range(sheet['!ref']);
+
+            // Scan every cell for "GROUP -" headers
+            for (let r = range.s.r; r <= range.e.r; r++) {
+                for (let c = range.s.c; c <= range.e.c; c++) {
+                    const cell = sheet[xlsx.utils.encode_cell({ r, c })];
+                    
+                    if (cell && typeof cell.v === 'string' && cell.v.toUpperCase().includes('GROUP -')) {
+                        // Extract the group number (e.g., from "GROUP - 56")
+                        const groupMatch = cell.v.match(/GROUP\s*-\s*(\d+)/i);
+                        if (groupMatch) {
+                            const groupNum = groupMatch[1];
+                            groups[groupNum] = [];
+                            
+                            // Collect the next 12 rows in the SAME column (Team Names)
+                            for (let i = 1; i <= 12; i++) {
+                                const teamCell = sheet[xlsx.utils.encode_cell({ r: r + i, c: c })];
+                                if (teamCell && teamCell.v) {
+                                    const teamName = teamCell.v.toString().trim();
+                                    if (teamName && teamName !== '' && isNaN(teamName)) {
+                                        groups[groupNum].push(teamName);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-            });
+            }
 
             const groupIds = Object.keys(groups);
             if (groupIds.length === 0) {
