@@ -193,7 +193,7 @@ function startWatchdog(client) {
         } catch (error) {
             logger.error(`[WATCHDOG ERROR] ${error.message}`);
         }
-    }, 30000); // Check every 30 seconds
+    }, 10000); // Check every 10 seconds
 }
 
 module.exports = { joinVC, startWatchdog };

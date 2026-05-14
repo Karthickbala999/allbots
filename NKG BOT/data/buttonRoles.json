@@ -1,0 +1,627 @@
+{
+  "1504110162338779188": {
+    "channelId": "1501865785684136050",
+    "buttons": [
+      {
+        "roleId": "1504086927454900375",
+        "label": "G-1",
+        "style": "Primary"
+      }
+    ]
+  },
+  "1504122034312183858": {
+    "channelId": "1504117583656386630",
+    "buttons": [
+      {
+        "roleId": "1504086927454900375",
+        "label": "GROUP 1",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087064910495836",
+        "label": "GROUP 2",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087118819885087",
+        "label": "GROUP 3",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087176873377803",
+        "label": "GROUP 4",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087214584369243",
+        "label": "GROUP 5",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087252496678922",
+        "label": "GROUP 6",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087302605897869",
+        "label": "GROUP 7",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087370662805604",
+        "label": "GROUP 8",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087451449167912",
+        "label": "GROUP 9",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087506646339775",
+        "label": "GROUP 10",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087656408285314",
+        "label": "GROUP 11",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087702495297618",
+        "label": "GROUP 12",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087742773071992",
+        "label": "GROUP 13",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504087781063000094",
+        "label": "GROUP 14",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098546272571502",
+        "label": "GROUP 15",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098549757902898",
+        "label": "GROUP 16",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098552622616589",
+        "label": "GROUP 17",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098556028391575",
+        "label": "GROUP 18",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098559270588599",
+        "label": "GROUP 19",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098562483683360",
+        "label": "GROUP 20",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098565759176875",
+        "label": "GROUP 21",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098568825213039",
+        "label": "GROUP 22",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098572365201491",
+        "label": "GROUP 23",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098575192293487",
+        "label": "GROUP 24",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098580242370713",
+        "label": "GROUP 25",
+        "style": "Primary"
+      }
+    ]
+  },
+  "1504124875009163366": {
+    "channelId": "1504117583656386630",
+    "buttons": [
+      {
+        "roleId": "1504098583568449677",
+        "label": "GROUP 26",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098587246858322",
+        "label": "GROUP 27",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098590359027883",
+        "label": "GROUP 28",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098594276511745",
+        "label": "GROUP 29",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098598005248232",
+        "label": "GROUP 30",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098601347842068",
+        "label": "GROUP 31",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098604649025536",
+        "label": "GROUP 32",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098607492763801",
+        "label": "GROUP 33",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098610982420640",
+        "label": "GROUP 34",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098617059966997",
+        "label": "GROUP 35",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098620301902014",
+        "label": "GROUP 36",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098623435182100",
+        "label": "GROUP 37",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098626656403558",
+        "label": "GROUP 38",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098629449945139",
+        "label": "GROUP 39",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098632859648091",
+        "label": "GROUP 40",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098636043128974",
+        "label": "GROUP 41",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098639528853515",
+        "label": "GROUP 42",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098643697991823",
+        "label": "GROUP 43",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098647397109840",
+        "label": "GROUP 44",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098652312965130",
+        "label": "GROUP 45",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098655546642564",
+        "label": "GROUP 46",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098658952413297",
+        "label": "GROUP 47",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098662622691368",
+        "label": "GROUP 48",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098665961099334",
+        "label": "GROUP 49",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098671023882254",
+        "label": "GROUP 50",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098675226316934",
+        "label": "GROUP 51",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098678678487131",
+        "label": "GROUP 52",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098681937199185",
+        "label": "GROUP 53",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098684860895445",
+        "label": "GROUP 54",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098689994588160",
+        "label": "GROUP 55",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098692955897999",
+        "label": "GROUP 56",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098696181059655",
+        "label": "GROUP 57",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098699335434274",
+        "label": "GROUP 58",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098702623641681",
+        "label": "GROUP 59",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098705815638076",
+        "label": "GROUP 60",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098709095579730",
+        "label": "GROUP 61",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098712589172766",
+        "label": "GROUP 62",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098715823116480",
+        "label": "GROUP 63",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098719035817994",
+        "label": "GROUP 64",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098723846684733",
+        "label": "GROUP 65",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098726996611225",
+        "label": "GROUP 66",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098730226225244",
+        "label": "GROUP 67",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098734206750730",
+        "label": "GROUP 68",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098737322983466",
+        "label": "GROUP 69",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098740921831584",
+        "label": "GROUP 70",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098744306503690",
+        "label": "GROUP 71",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098747473330306",
+        "label": "GROUP 72",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098750610804736",
+        "label": "GROUP 73",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098753659797524",
+        "label": "GROUP 74",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098758919721152",
+        "label": "GROUP 75",
+        "style": "Primary"
+      }
+    ]
+  },
+  "1504126081823674533": {
+    "channelId": "1504117583656386630",
+    "buttons": [
+      {
+        "roleId": "1504098675226316934",
+        "label": "GROUP 51",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098678678487131",
+        "label": "GROUP 52",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098681937199185",
+        "label": "GROUP 53",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098684860895445",
+        "label": "GROUP 54",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098689994588160",
+        "label": "GROUP 55",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098692955897999",
+        "label": "GROUP 56",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098696181059655",
+        "label": "GROUP 57",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098699335434274",
+        "label": "GROUP 58",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098702623641681",
+        "label": "GROUP 59",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098705815638076",
+        "label": "GROUP 60",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098709095579730",
+        "label": "GROUP 61",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098712589172766",
+        "label": "GROUP 62",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098715823116480",
+        "label": "GROUP 63",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098719035817994",
+        "label": "GROUP 64",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098723846684733",
+        "label": "GROUP 65",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098726996611225",
+        "label": "GROUP 66",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098730226225244",
+        "label": "GROUP 67",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098734206750730",
+        "label": "GROUP 68",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098737322983466",
+        "label": "GROUP 69",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098740921831584",
+        "label": "GROUP 70",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098744306503690",
+        "label": "GROUP 71",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098747473330306",
+        "label": "GROUP 72",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098750610804736",
+        "label": "GROUP 73",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098753659797524",
+        "label": "GROUP 74",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098758919721152",
+        "label": "GROUP 75",
+        "style": "Primary"
+      }
+    ]
+  },
+  "1504126880687587409": {
+    "channelId": "1504117583656386630",
+    "buttons": [
+      {
+        "roleId": "1504098762149330964",
+        "label": "GROUP 76",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098765294927974",
+        "label": "GROUP 77",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098768482472218",
+        "label": "GROUP 78",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098772123390003",
+        "label": "GROUP 79",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098775260463236",
+        "label": "GROUP 80",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098778825752637",
+        "label": "GROUP 81",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098782319480892",
+        "label": "GROUP 82",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098785935097969",
+        "label": "GROUP 83",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098789366042676",
+        "label": "GROUP 84",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098794633957487",
+        "label": "GROUP 85",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098797691736217",
+        "label": "GROUP 86",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098800778743981",
+        "label": "GROUP 87",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098803911753881",
+        "label": "GROUP 88",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098807393288324",
+        "label": "GROUP 89",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098810945605684",
+        "label": "GROUP 90",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098814443782164",
+        "label": "GROUP 91",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098817635782738",
+        "label": "GROUP 92",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098821079171112",
+        "label": "GROUP 93",
+        "style": "Primary"
+      },
+      {
+        "roleId": "1504098824392540180",
+        "label": "GROUP 94",
+        "style": "Primary"
+      }
+    ]
+  }
+}

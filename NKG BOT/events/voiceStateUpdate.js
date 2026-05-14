@@ -12,10 +12,8 @@ module.exports = {
             if (!newState.channelId || newState.channelId !== config.voiceChannelId) {
                 logger.warn(`[VOICE STATE] Bot was moved or disconnected from the target channel. Re-joining...`);
                 
-                // Small delay before re-joining to avoid rate limits
-                setTimeout(async () => {
-                    joinVC(client);
-                }, 2000);
+                // Instant re-join
+                joinVC(client);
             }
         }
     },
