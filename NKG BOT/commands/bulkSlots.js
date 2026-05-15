@@ -63,8 +63,8 @@ module.exports = {
             for (let r = range.s.r; r <= range.e.r; r++) {
                 for (let c = range.s.c; c <= range.e.c; c++) {
                     const cell = sheet[xlsx.utils.encode_cell({ r, c })];
-                    if (cell && typeof cell.v === 'string' && cell.v.toUpperCase().includes('GROUP -')) {
-                        const groupMatch = cell.v.match(/GROUP\s*-\s*(\d+)/i);
+                    if (cell && typeof cell.v === 'string') {
+                        const groupMatch = cell.v.match(/GROUP[\s-]*(\d+)/i);
                         if (groupMatch) {
                             const groupNum = parseInt(groupMatch[1]);
                             // Only collect data if it's within our requested range
@@ -89,9 +89,14 @@ module.exports = {
             }
 
             await interaction.editReply(`⏳ Starting ordered dispatch for ${foundGroupIds.length} groups...`);
+            logger.info(`[BULK SLOTS] Found groups in Excel: ${foundGroupIds.join(', ')}`);
 
             let successCount = 0;
+            let notFoundCount = 0;
             const sentMessages = [];
+
+            // Ensure channels are fetched
+            await interaction.guild.channels.fetch();
 
             // 3. Sequential Ordered Sending
             for (let i = startGroup; i <= endGroup; i++) {
@@ -128,6 +133,9 @@ module.exports = {
                     } catch (err) {
                         logger.error(`[BULK SLOTS] Failed to send to ${channelName}: ${err.message}`);
                     }
+                } else {
+                    logger.warn(`[BULK SLOTS] Channel not found: ${channelName}`);
+                    notFoundCount++;
                 }
 
                 // Strictly ordered delay to prevent rate limits and ensure sequence
@@ -139,7 +147,7 @@ module.exports = {
             fs.writeFileSync(dataPath, JSON.stringify(sentMessages, null, 2));
 
             await interaction.followUp({ 
-                content: `✅ **Successfully Dispatched!**\nSent ${successCount} lists to channels group-${startGroup} through group-${endGroup}.`,
+                content: `✅ **Dispatch Complete!**\nSent ${successCount} lists.\n${notFoundCount > 0 ? `⚠️ Could not find ${notFoundCount} channels (check names).` : ''}`,
                 flags: [MessageFlags.Ephemeral] 
             });
 
