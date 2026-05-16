@@ -14,6 +14,10 @@ module.exports = {
 
         // Start Watchdog to check connection every 30s
         startWatchdog(client);
+
+        // Start Persistent Timer Loop
+        const timerManager = require('../utils/timerManager');
+        timerManager.startTimerLoop(client);
     },
 };
 

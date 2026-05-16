@@ -43,6 +43,20 @@ module.exports = {
             return;
         }
 
+        if (interaction.isAutocomplete()) {
+            const command = client.commands.get(interaction.commandName);
+            if (!command) return;
+
+            try {
+                if (command.autocomplete) {
+                    await command.autocomplete(interaction, client);
+                }
+            } catch (error) {
+                logger.error(`[AUTOCOMPLETE ERROR] ${error.message}`);
+            }
+            return;
+        }
+
         // Only handle button clicks
         if (!interaction.isButton()) return;
         if (!interaction.customId.startsWith('buttonrole_')) return;

@@ -13,10 +13,20 @@ module.exports = {
                     { name: '🔒 Lock (Disable Chat)', value: 'lock' },
                     { name: '🔓 Unlock (Enable Chat)', value: 'unlock' }
                 ))
+        .addIntegerOption(option => 
+            option.setName('start')
+                .setDescription('Optional: Starting group number (e.g., 1)')
+                .setRequired(false))
+        .addIntegerOption(option => 
+            option.setName('end')
+                .setDescription('Optional: Ending group number (e.g., 94)')
+                .setRequired(false))
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     async execute(interaction) {
         const action = interaction.options.getString('action');
+        const startGroup = interaction.options.getInteger('start');
+        const endGroup = interaction.options.getInteger('end');
         const isLocking = action === 'lock';
         
         await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
@@ -24,16 +34,27 @@ module.exports = {
         try {
             await interaction.guild.channels.fetch();
             
-            // Find all text channels starting with 'group-'
-            const groupChannels = interaction.guild.channels.cache.filter(c => 
-                c.isTextBased() && c.name.toLowerCase().startsWith('group-')
-            );
+            // Find and filter group channels
+            const groupChannels = interaction.guild.channels.cache.filter(c => {
+                if (!c.isTextBased() || !c.name.toLowerCase().startsWith('group-')) return false;
+                
+                // If start/end are provided, filter by group number
+                if (startGroup !== null || endGroup !== null) {
+                    const match = c.name.match(/group-(\d+)/i);
+                    if (match) {
+                        const num = parseInt(match[1]);
+                        if (startGroup !== null && num < startGroup) return false;
+                        if (endGroup !== null && num > endGroup) return false;
+                    }
+                }
+                return true;
+            });
 
             if (groupChannels.size === 0) {
-                return interaction.editReply('❌ No group channels found.');
+                return interaction.editReply('❌ No group channels found within that range.');
             }
 
-            await interaction.editReply(`⏳ ${isLocking ? 'Locking' : 'Unlocking'} chat for ${groupChannels.size} groups... Please wait (takes about 1 minute).`);
+            await interaction.editReply(`⏳ ${isLocking ? 'Locking' : 'Unlocking'} chat for ${groupChannels.size} groups... Please wait.`);
             logger.info(`[GROUP CHAT] Starting ${action} on ${groupChannels.size} groups.`);
 
             let successCount = 0;
@@ -50,7 +71,10 @@ module.exports = {
                             // Target roles that start with "G" (e.g. G1, G-1, Group-1) and are not Admin roles
                             if (role && role.name.toLowerCase().startsWith('g') && !role.permissions.has(PermissionFlagsBits.Administrator)) {
                                 await channel.permissionOverwrites.edit(overwriteId, {
-                                    SendMessages: isLocking ? false : true
+                                    SendMessages: isLocking ? false : true,
+                                    SendMessagesInThreads: isLocking ? false : true,
+                                    CreatePublicThreads: isLocking ? false : true,
+                                    CreatePrivateThreads: isLocking ? false : true
                                 });
                             }
                         }

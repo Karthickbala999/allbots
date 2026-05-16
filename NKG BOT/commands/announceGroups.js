@@ -1,5 +1,8 @@
-const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, MessageFlags, ChannelType, EmbedBuilder } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
 const logger = require('../utils/logger');
+const config = require('../config/config');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -7,8 +10,16 @@ module.exports = {
         .setDescription('📢 Send a message to specific or ALL group channels at once')
         .addStringOption(option => 
             option.setName('message')
-                .setDescription('The message to send to the groups')
+                .setDescription('The text of your announcement')
                 .setRequired(true))
+        .addStringOption(option => 
+            option.setName('title')
+                .setDescription('Optional: Title for the announcement box')
+                .setRequired(false))
+        .addStringOption(option => 
+            option.setName('color')
+                .setDescription('Optional: Border color (e.g. Gold, Red, Blue, #FFFFFF)')
+                .setRequired(false))
         .addIntegerOption(option => 
             option.setName('start')
                 .setDescription('Starting group number (optional, e.g. 1)')
@@ -16,6 +27,11 @@ module.exports = {
         .addIntegerOption(option => 
             option.setName('end')
                 .setDescription('Ending group number (optional, e.g. 94)')
+                .setRequired(false))
+        .addChannelOption(option => 
+            option.setName('category')
+                .setDescription('Optional: Only send to channels inside this category')
+                .addChannelTypes(ChannelType.GuildCategory)
                 .setRequired(false))
         .addAttachmentOption(option =>
             option.setName('attachment')
@@ -25,9 +41,12 @@ module.exports = {
 
     async execute(interaction) {
         const messageText = interaction.options.getString('message');
+        const embedTitle = interaction.options.getString('title');
+        const embedColor = interaction.options.getString('color');
         const startGroup = interaction.options.getInteger('start');
         const endGroup = interaction.options.getInteger('end');
         const attachment = interaction.options.getAttachment('attachment');
+        const category = interaction.options.getChannel('category');
 
         // Validation for start and end
         if ((startGroup && !endGroup) || (!startGroup && endGroup)) {
@@ -39,49 +58,63 @@ module.exports = {
 
         await interaction.deferReply({ flags: [MessageFlags.Ephemeral] });
 
+        // Prepare the Embed
+        const embed = new EmbedBuilder()
+            .setDescription(messageText.replace(/\\n/g, '\n')) // Support manual newlines if they type \n
+            .setColor(embedColor || config.colors.primary)
+            .setFooter({ text: config.branding.footer });
+
+        if (embedTitle) {
+            embed.setTitle(embedTitle);
+        }
+
+        if (attachment) {
+            embed.setImage(attachment.url);
+        }
+
         try {
             await interaction.guild.channels.fetch();
             
-            // Find and filter text channels starting with 'group-'
+            // Find and filter text channels
             const groupChannels = interaction.guild.channels.cache.filter(c => {
-                if (!c.isTextBased() || !c.name.toLowerCase().startsWith('group-')) return false;
+                if (!c.isTextBased()) return false;
+
+                // If category is provided, only include channels inside it
+                if (category && c.parentId !== category.id) return false;
+
+                // If NO category is provided, we only look for channels starting with "group-" (Round 1 style)
+                if (!category && !c.name.toLowerCase().includes('group')) return false;
                 
-                // If the user specified a range, extract the number from the name and check if it's within range
+                // If the user specified a range, extract the number from the name and check it
                 if (startGroup && endGroup) {
-                    const match = c.name.match(/group-(\d+)/i);
+                    const match = c.name.match(/(\d+)/); // Extracts the first number it finds
                     if (match) {
                         const num = parseInt(match[1]);
                         if (num >= startGroup && num <= endGroup) return true;
                     }
                     return false;
                 }
-                
                 return true;
             });
 
             if (groupChannels.size === 0) {
-                return interaction.editReply('❌ No group channels found in that range.');
+                return interaction.editReply('❌ No matching group channels found.');
             }
 
-            await interaction.editReply(`⏳ Broadcasting to ${groupChannels.size} groups... Please wait (this takes about 1 second per group).`);
-            logger.info(`[ANNOUNCE] Starting broadcast to ${groupChannels.size} groups.`);
+            await interaction.editReply(`🚀 **Announcement starting...** Sending to ${groupChannels.size} channels.`);
 
+            const messageIds = {};
             let successCount = 0;
             let failCount = 0;
 
-            const payload = { content: messageText };
-            if (attachment) {
-                payload.files = [attachment.url];
-            }
-
-            const fs = require('fs');
-            const path = require('path');
-            const sentMessages = [];
-            
             for (const [id, channel] of groupChannels) {
                 try {
-                    const msg = await channel.send(payload);
-                    sentMessages.push({ channelId: channel.id, messageId: msg.id });
+                    const sent = await channel.send({ 
+                        content: '@everyone', 
+                        embeds: [embed] 
+                    });
+                    
+                    messageIds[channel.id] = sent.id;
                     successCount++;
                 } catch (err) {
                     logger.error(`[ANNOUNCE] Failed to send to ${channel.name}: ${err.message}`);
@@ -93,17 +126,14 @@ module.exports = {
             }
 
             // Save the batch so it can be edited or deleted later
-            const dataPath = path.join(__dirname, '../data/lastAnnounceBatch.json');
-            fs.writeFileSync(dataPath, JSON.stringify(sentMessages, null, 2));
+            const dataPath = path.join(__dirname, '../data/lastAnnouncements.json');
+            fs.writeFileSync(dataPath, JSON.stringify(messageIds, null, 2));
 
-            await interaction.followUp({
-                content: `✅ **Broadcast Complete!**\nSuccessfully sent to ${successCount} groups.\n${failCount > 0 ? `⚠️ Failed to send to ${failCount} groups.` : ''}`,
-                flags: [MessageFlags.Ephemeral]
-            });
+            await interaction.editReply(`✅ **Broadcast Complete!**\nSent to ${successCount} groups.\n${failCount > 0 ? `⚠️ Failed on ${failCount} channels.` : ''}`);
 
         } catch (error) {
-            logger.error(`[ANNOUNCE] ${error.message}`);
-            await interaction.editReply(`❌ Error: ${error.message}`);
+            logger.error(`[ANNOUNCE] Failed: ${error.message}`);
+            await interaction.editReply('❌ An error occurred while sending announcements.');
         }
     }
 };
